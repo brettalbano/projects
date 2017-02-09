@@ -12,13 +12,14 @@ def setup_python_path():
 
 setup_python_path()
 
-import Matrix
+from EvenOdd_EC import EvenOdd_EC
 import ec_utils
 
 def main():
-   device_array = ec_utils.get_Matrix()
-   parity_array = ec_utils.get_parities(device_array)
-   syndrome_array = ec_utils.get_syndrome_array(device_array, parity_array)
+	EvenOdd_obj = EvenOdd_EC(ec_utils.get_EvenOdd_EC())
+	print EvenOdd_obj
+	EvenOdd_obj = EvenOdd_obj.bring_device_down(3)
+	print EvenOdd_obj
 
 if __name__ == '__main__':
     main()

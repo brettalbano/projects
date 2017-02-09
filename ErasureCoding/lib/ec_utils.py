@@ -3,15 +3,15 @@ Misc. utility functions for this implimentation of Erasure Coding
 '''
 
 import logging
-import Matrix
+import EvenOdd_EC
 from bitarray import bitarray
 
-def get_Matrix():
-	list_1 = Matrix.List_A
-	list_2 = Matrix.List_B
-	list_3 = Matrix.List_C
-	list_4 = Matrix.List_D
-	list_5 = Matrix.List_E
+def get_EvenOdd_EC():
+	list_1 = EvenOdd_EC.List_A
+	list_2 = EvenOdd_EC.List_B
+	list_3 = EvenOdd_EC.List_C
+	list_4 = EvenOdd_EC.List_D
+	list_5 = EvenOdd_EC.List_E
 	
 	return [list_1, list_2, list_3, list_4, list_5]
 
@@ -74,8 +74,22 @@ def get_diagonal_lists(device_matrix):
 	Output:
 	diagonals_list: list(list(bool))
 	'''
-	
-def get_syndrome_array(device_matrix, parity_array):
+	reverse_device_list = range(len(device_matrix)-1 , -1, -1)
+	num_words_in_device = len(device_matrix[0])
+	num_devices = len(device_matrix)
+	diagonal_list = []
+	for diagonal_index in range(num_devices):
+		temp_diag_list = []
+		word_index = 0
+		device_index = diagonal_index
+		while len(temp_diag_list) < num_words_in_device:
+			temp_diag_list.append(device_matrix[device_index][word_index])
+			word_index += 1
+			device_index = (device_index-1) % num_devices
+		diagonal_list.append(temp_diag_list)
+	return diagonal_list
+
+def get_syndrome_array(device_matrix, syndrome_parity):
 	'''
 	Will find the syndrome value from a diagonal in the device_matrix.
 	It will then use this syndrome value and find the parity of all the
@@ -86,6 +100,19 @@ def get_syndrome_array(device_matrix, parity_array):
 	output:
 	synd_array: list(bool)
 	'''
-	syndrome_parity = get_syndrome_parity(device_matrix)
 	diagonals_list = get_diagonal_lists(device_matrix)
+	syndrome_diagonal = diagonals_list.pop()
+	temp_syndrome_array = [ device+[syndrome_parity] for device in diagonals_list]
+	return [get_array_parity(device) for device in temp_syndrome_array]
+
+def find_single_missing_word(ec_obj):
+	'''
+	Will find the diagonal of the device matrix with at most missing one word
+	input:
+	ec_obj: EvenOdd_EC
+	output:
+	result_diagonal: list(bool) or bitarray
+	'''
+	diagonals = get_diagonal_lists(ec_obj.device_matrix)
+	
 	
