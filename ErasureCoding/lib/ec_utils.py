@@ -105,7 +105,7 @@ def get_syndrome_array(device_matrix, syndrome_parity):
 	temp_syndrome_array = [ device+[syndrome_parity] for device in diagonals_list]
 	return [get_array_parity(device) for device in temp_syndrome_array]
 
-def find_single_missing_word(ec_obj):
+def find_missing_word_diagonal(ec_obj):
 	'''
 	Will find the diagonal of the device matrix with at most missing one word
 	input:
@@ -113,6 +113,13 @@ def find_single_missing_word(ec_obj):
 	output:
 	result_diagonal: list(bool) or bitarray
 	'''
-	diagonals = get_diagonal_lists(ec_obj.device_matrix)
-	
+	diagonals = get_diagonal_lists(ec_obj.device_array)
+	for diag in diagonals:
+		down_count = 0
+		for word in diag:
+			if word is None:
+				down_count += 1
+		if down_count == 1:
+			return diag
+	return None
 	

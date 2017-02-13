@@ -4,17 +4,17 @@ import random
 import ec_utils
 
 WORD_LENGTH = 4
-#List_A = bitarray('0000')
-#List_B = bitarray('1010')
-#List_C = bitarray('1001')
-#List_D = bitarray('0101')
-#List_E = bitarray('1111')
+List_A = bitarray('0000')
+List_B = bitarray('1010')
+List_C = bitarray('1001')
+List_D = bitarray('0101')
+List_E = bitarray('1111')
    
-List_A = [random.choice((True, False)) for x in range(WORD_LENGTH)] 
-List_B = [random.choice((True, False)) for x in range(WORD_LENGTH)] 
-List_C = [random.choice((True, False)) for x in range(WORD_LENGTH)] 
-List_D = [random.choice((True, False)) for x in range(WORD_LENGTH)] 
-List_E = [random.choice((True, False)) for x in range(WORD_LENGTH)] 
+#List_A = [random.choice((True, False)) for x in range(WORD_LENGTH)] 
+#List_B = [random.choice((True, False)) for x in range(WORD_LENGTH)] 
+#List_C = [random.choice((True, False)) for x in range(WORD_LENGTH)] 
+#List_D = [random.choice((True, False)) for x in range(WORD_LENGTH)] 
+#List_E = [random.choice((True, False)) for x in range(WORD_LENGTH)]
 
 class EvenOdd_EC():
 	'''
@@ -57,3 +57,31 @@ class EvenOdd_EC():
    		for word_index in range(len(self.device_array[device_num])):
    			self.device_array[device_num][word_index] = None
    		return self
+
+   	def find_missing_word_diagonal(self):
+		'''
+		Will find the diagonal of the device matrix with at most missing one word
+		input:
+		ec_obj: EvenOdd_EC
+		output:
+		result_diagonal: list(bool) or bitarray
+		'''
+		diagonals = get_diagonal_lists(self.device_array)
+		for diag in diagonals:
+			down_count = 0
+			for word in diag:
+				if word is None:
+					down_count += 1
+			if down_count == 1:
+				return diag
+		return None
+
+	def decode_missing_devices(self):
+		'''
+		Will find the diagonals with missing words and decode it from the diagonal
+		missing only one word and to continue until totally finished.
+		output:
+		self: EvenOdd_EC object
+		'''
+		diagonal = self.find_missing_word_diagonal()
+		#while diagonal is not None:
