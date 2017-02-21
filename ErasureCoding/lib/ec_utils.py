@@ -13,7 +13,7 @@ def get_EvenOdd_EC():
 	list_4 = EvenOdd_EC.List_D
 	list_5 = EvenOdd_EC.List_E
 	
-	return [list_1, list_2, list_3, list_4, list_5]
+	return EvenOdd_EC.lists
 
 def get_parities(device_matrix):
 	'''
@@ -59,13 +59,11 @@ def get_syndrome_parity(device_matrix):
 	Output:
 	syndrome_parity: bool
 	'''
-	diagonal_array = []
-	reversed_element_list = range(len(device_matrix[0])-1, -1, -1)
-	for device, word in zip(device_matrix,reversed_element_list):
-		diagonal_array.append(device[word])
-	syndrome_parity = get_array_parity(diagonal_array)
-	return syndrome_parity
-
+	temp_array = get_diagonal_lists(device_matrix)[-1]
+	print temp_array
+	temp =  get_array_parity(temp_array)
+	print temp
+	return temp
 def get_diagonal_lists(device_matrix):
 	'''
 	Will find the corresponding diagonals to the device matrix.
@@ -83,7 +81,10 @@ def get_diagonal_lists(device_matrix):
 		word_index = 0
 		device_index = diagonal_index
 		while len(temp_diag_list) < num_words_in_device:
-			temp_diag_list.append(device_matrix[device_index][word_index])
+			if device_matrix[device_index] is not None:
+				temp_diag_list.append(device_matrix[device_index][word_index])
+			else:
+				temp_diag_list.append(None)
 			word_index += 1
 			device_index = (device_index-1) % num_devices
 		diagonal_list.append(temp_diag_list)
@@ -105,21 +106,5 @@ def get_syndrome_array(device_matrix, syndrome_parity):
 	temp_syndrome_array = [ device+[syndrome_parity] for device in diagonals_list]
 	return [get_array_parity(device) for device in temp_syndrome_array]
 
-def find_missing_word_diagonal(ec_obj):
-	'''
-	Will find the diagonal of the device matrix with at most missing one word
-	input:
-	ec_obj: EvenOdd_EC
-	output:
-	result_diagonal: list(bool) or bitarray
-	'''
-	diagonals = get_diagonal_lists(ec_obj.device_array)
-	for diag in diagonals:
-		down_count = 0
-		for word in diag:
-			if word is None:
-				down_count += 1
-		if down_count == 1:
-			return diag
-	return None
+#def decode_missing_word_()
 	

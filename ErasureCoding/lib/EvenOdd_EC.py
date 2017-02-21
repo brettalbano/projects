@@ -4,12 +4,25 @@ import random
 import ec_utils
 
 WORD_LENGTH = 4
-List_A = bitarray('0000')
-List_B = bitarray('1010')
-List_C = bitarray('1001')
-List_D = bitarray('0101')
-List_E = bitarray('1111')
-   
+List_A = [0, 0, 0, 0]
+List_B = [1, 0, 1, 0]
+List_C = [1, 0, 1, 1]
+List_D = [0, 1, 0, 1]
+List_E = [1, 1, 1, 1]
+lists = [List_A, List_B, List_C, List_D, List_E]
+# List_A = [0, 0, 0, 0, 1]
+# List_B = [1, 0, 1, 0, 0]
+# List_C = [1, 0, 1, 1, 1]
+# List_D = [0, 1, 0, 1, 0]
+# List_E = [1, 1, 1, 1, 1]
+# List_F = [0, 1, 1, 1, 1]
+# lists = [List_A, List_B, List_C, List_D, List_E, List_F]
+'''
+   		0 1 1 0 1	
+   		0 0 0 1 1
+   		0 1 1 0 1
+   		0 0 1 1 1
+'''
 #List_A = [random.choice((True, False)) for x in range(WORD_LENGTH)] 
 #List_B = [random.choice((True, False)) for x in range(WORD_LENGTH)] 
 #List_C = [random.choice((True, False)) for x in range(WORD_LENGTH)] 
@@ -66,7 +79,7 @@ class EvenOdd_EC():
 		output:
 		result_diagonal: list(bool) or bitarray
 		'''
-		diagonals = get_diagonal_lists(self.device_array)
+		diagonals = ec_utils.get_diagonal_lists(self.device_array)
 		for diag in diagonals:
 			down_count = 0
 			for word in diag:
