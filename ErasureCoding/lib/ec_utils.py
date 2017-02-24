@@ -60,9 +60,7 @@ def get_syndrome_parity(device_matrix):
   syndrome_parity: bool
   '''
   temp_array = get_diagonal_lists(device_matrix)[-1]
-  print temp_array
   temp =  get_array_parity(temp_array)
-  print temp
   return temp
 
 def get_diagonal_lists(device_matrix):
@@ -73,7 +71,6 @@ def get_diagonal_lists(device_matrix):
   Output:
   diagonals_list: list(list(bool))
   '''
-  reverse_device_list = range(len(device_matrix)-1 , -1, -1)
   num_words_in_device = len(device_matrix[0])
   num_devices = len(device_matrix)
   diagonal_list = []

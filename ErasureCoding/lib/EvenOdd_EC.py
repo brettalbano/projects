@@ -55,9 +55,9 @@ class EvenOdd_EC():
         return_str = ''
         for device_index in range(len(self.device_array)):
             return_str += 'Device ' + str(device_index) + ':       ' + str(self.device_array[device_index]) + '\n'
-        return_str += 'Parity Array:   ' + str(self.parity_array) + '\n'
-        return_str += 'Syndrome Array: ' + str(self.syndrome_array) + '\n'
-        return_str += 'Syndrome Parity: ' + str(self.syndrome) + '\n'
+        #return_str += 'Parity Array:   ' + str(self.parity_array) + '\n'
+        #return_str += 'Syndrome Array: ' + str(self.syndrome_array) + '\n'
+        #return_str += 'Syndrome Parity: ' + str(self.syndrome) + '\n'
         return return_str
 
     def bring_device_down(self, device_num):
@@ -127,8 +127,12 @@ class EvenOdd_EC():
         while self.any_words_missing():
             while self.find_missing_word_diagonal() is not None:
                 diagonal, d_index = self.find_missing_word_diagonal()
-                d_decoded_list = self.decode_missing_word(diagonal, self.syndrome_array[d_index])
-                self = self.edit_diagonal_list(d_index, d_decoded_list)
+                if d_index == len(self.device_array) - 1:
+                    d_decoded_list = self.decode_missing_word(diagonal, self.syndrome)
+                    self = self.edit_diagonal_list(d_index, d_decoded_list)
+                else:
+                    d_decoded_list = self.decode_missing_word(diagonal, self.syndrome_array[d_index])
+                    self = self.edit_diagonal_list(d_index, d_decoded_list)
             while self.find_missing_single_word_horizontal() is not None:
                 horizontal, h_index = self.find_missing_single_word_horizontal()
                 h_decoded_list = self.decode_missing_word(horizontal, self.parity_array[h_index])
